@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hugo on DW&#39;s Blog</title>
+    <link>https://dylan-h-wang.github.io/tags/hugo/</link>
+    <description>Recent content in Hugo on DW&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+    <lastBuildDate>Tue, 05 Mar 2019 21:21:03 +1100</lastBuildDate>
+    
+	<atom:link href="https://dylan-h-wang.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Guide of Hugo</title>
+      <link>https://dylan-h-wang.github.io/posts/2019/03/guide-of-hugo/</link>
+      <pubDate>Tue, 05 Mar 2019 21:21:03 +1100</pubDate>
+      
+      <guid>https://dylan-h-wang.github.io/posts/2019/03/guide-of-hugo/</guid>
+      <description>I will just choose directories you might use:
+archetypes this is the directory contains preconfigured front matter and possibly also a content disposition for your website&#39;s content types. There are several parameters you can set.
+config
+This file will define the behaviour of Hugo which is related to the style of your site. If you have multiple config files, you can create a configuration directory to store them. You can choose to override the dault file with one or multiple site config files using the command line --config switch.</description>
+    </item>
+    
+  </channel>
+</rss>

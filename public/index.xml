@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>DW&#39;s Blog</title>
+    <link>https://dylan-h-wang.github.io/</link>
+    <description>Recent content on DW&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+    <lastBuildDate>Mon, 04 Mar 2019 00:14:53 +1100</lastBuildDate>
+    
+	<atom:link href="https://dylan-h-wang.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Type conversions in C&#43;&#43;</title>
+      <link>https://dylan-h-wang.github.io/posts/2019/04/type-conversions-in-c-/</link>
+      <pubDate>Mon, 15 Apr 2019 21:52:43 +1000</pubDate>
+      
+      <guid>https://dylan-h-wang.github.io/posts/2019/04/type-conversions-in-c-/</guid>
+      <description>Implicit conversion
+Type casting
+dynamic_cast
+static_cast
+const_cast
+Implicit conversion This will automatically perform when a value is copied to a compatible type. For example:
+short a = 2000; int b; b = a; The given example is also know as standard conversion
+Conversions that may not be able to represent the same value   If a negative integer value is converted to an unsigned type.
+E.g. unsigned char a = -1; // a = 255</description>
+    </item>
+    
+    <item>
+      <title>Guide of Hugo</title>
+      <link>https://dylan-h-wang.github.io/posts/2019/03/guide-of-hugo/</link>
+      <pubDate>Tue, 05 Mar 2019 21:21:03 +1100</pubDate>
+      
+      <guid>https://dylan-h-wang.github.io/posts/2019/03/guide-of-hugo/</guid>
+      <description>I will just choose directories you might use:
+archetypes this is the directory contains preconfigured front matter and possibly also a content disposition for your website&#39;s content types. There are several parameters you can set.
+config
+This file will define the behaviour of Hugo which is related to the style of your site. If you have multiple config files, you can create a configuration directory to store them. You can choose to override the dault file with one or multiple site config files using the command line --config switch.</description>
+    </item>
+    
+    <item>
+      <title>README</title>
+      <link>https://dylan-h-wang.github.io/entertainment/readme/</link>
+      <pubDate>Mon, 04 Mar 2019 12:14:09 +1100</pubDate>
+      
+      <guid>https://dylan-h-wang.github.io/entertainment/readme/</guid>
+      <description>The primary purpose of this section is that I hope you can have a basic idea about what Chinese fantasy novel is. Does it like Harry Potter which shows you an intensive and attractive wizard world? Or it likes A Song of Ice and Fire which draws the great war happening between the continents Westeros and Essos? By reading this novel, you may have a brand new view about China and be interested in taking a further study of Chinese culture, which is what precisely I want to achieve.</description>
+    </item>
+    
+    <item>
+      <title>Abstract</title>
+      <link>https://dylan-h-wang.github.io/entertainment/abstract/</link>
+      <pubDate>Mon, 04 Mar 2019 12:10:03 +1100</pubDate>
+      
+      <guid>https://dylan-h-wang.github.io/entertainment/abstract/</guid>
+      <description>Tang Sect, the most famous martial arts sect of all. Tang San, a regular disciple of the Tang sect, is expelled from Tang sect because of trying to steal the top secret to fulfil his dream. With his ambition attained, he hands his legacy to the sect and throws himself from the fearsome “Hell’s Peak”.
+But he could have never imagined that this would reincarnate him in another world, one without magic, martial arts, and grudges.</description>
+    </item>
+    
+    <item>
+      <title>Contact</title>
+      <link>https://dylan-h-wang.github.io/contact/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://dylan-h-wang.github.io/contact/</guid>
+      <description>Any idea, any problem, any suggestion, just send me an email. I am waiting for you~🤪🤪🤪</description>
+    </item>
+    
+  </channel>
+</rss>

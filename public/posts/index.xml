@@ -1,0 +1,211 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Posts on DW&#39;s Blog</title>
+        <link>https://dylan-h-wang.github.io/posts/</link>
+        <description>Recent content in Posts on DW&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+        <lastBuildDate>Mon, 04 Mar 2019 00:23:05 +1100</lastBuildDate>
+        <atom:link href="https://dylan-h-wang.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Type conversions in C&#43;&#43;</title>
+            <link>https://dylan-h-wang.github.io/posts/2019/04/type-conversions-in-c-/</link>
+            <pubDate>Mon, 15 Apr 2019 21:52:43 +1000</pubDate>
+            
+            <guid>https://dylan-h-wang.github.io/posts/2019/04/type-conversions-in-c-/</guid>
+            <description>Implicit conversion
+Type casting
+dynamic_cast
+static_cast
+const_cast
+Implicit conversion This will automatically perform when a value is copied to a compatible type. For example:
+short a = 2000; int b; b = a; The given example is also know as standard conversion
+Conversions that may not be able to represent the same value   If a negative integer value is converted to an unsigned type.
+E.g. unsigned char a = -1; // a = 255</description>
+            <content type="html"><![CDATA[<p><a href="#implicit-conversion">Implicit conversion</a><br>
+<a href="#type-casting">Type casting</a><br>
+<a href="#dynamic-cast">dynamic_cast</a><br>
+<a href="#static-cast">static_cast</a><br>
+<a href="#const-cast">const_cast</a></p>
+<h2 id="implicit-conversion">Implicit conversion</h2>
+<p>This will automatically perform when a value is copied to a compatible type. For example:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">short</span> a <span style="color:#f92672">=</span> <span style="color:#ae81ff">2000</span>;
+<span style="color:#66d9ef">int</span> b;
+b <span style="color:#f92672">=</span> a;
+</code></pre></div><p>The given example is also know as <strong>standard conversion</strong></p>
+<h3 id="conversions-that-may-not-be-able-to-represent-the-same-value">Conversions that may not be able to represent the same value</h3>
+<ul>
+<li>
+<p>If a negative integer value is converted to an unsigned type.<br>
+E.g. <code>unsigned char a = -1; // a = 255</code></p>
+</li>
+<li>
+<p>The conversions from/to <code>bool</code> consider <code>false</code> equivalent to <em>zero</em> (for numeric types) and to <em>null pointer</em> (for pointer types); true is equivalent to all other values and is converted to the equivalent of 1.<br>
+E.g. <code>int a = true; // a = 1</code></p>
+</li>
+<li>
+<p>If the conversion is from a <em>floating-point</em> type to an <em>integer</em> type, the value is truncated (the decimal part is removed). If the result lies outside the range of representable values by the type, the conversion causes <em>undefined behaviour</em>.<br>
+E.g. <code>int a = 3.2; // a = 3</code></p>
+</li>
+<li>
+<p>Otherwise, if the conversion is between numeric types of the same kind (integer-to-integer or floating-to-floating), the conversion is valid, but the value is <em>implementation-specific</em> (and may not be portable).</p>
+</li>
+</ul>
+<h3 id="implicit-conversions-with-classes">Implicit conversions with classes</h3>
+<p>These can be controlled by three member functions:</p>
+<ul>
+<li><strong>Single-argument constructors:</strong> allow implicit conversion from a particular type to initialise an object. (Use <code>explicit</code> to avoid this)</li>
+<li><strong>Assignment operator:</strong> allow implicit conversion from a particular type on assignments.</li>
+<li><strong>Type-cast operator:</strong> allow implicit conversion to a particular type.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">// implicit conversion of classes:
+</span><span style="color:#75715e"></span><span style="color:#75715e">#</span><span style="color:#75715e">include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span> {};
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">B</span> {
+<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+  <span style="color:#75715e">// conversion from A (constructor):
+</span><span style="color:#75715e"></span>  B (<span style="color:#66d9ef">const</span> A<span style="color:#f92672">&amp;</span> x) {}
+  <span style="color:#75715e">// conversion from A (assignment):
+</span><span style="color:#75715e"></span>  B<span style="color:#f92672">&amp;</span> <span style="color:#66d9ef">operator</span><span style="color:#f92672">=</span> (<span style="color:#66d9ef">const</span> A<span style="color:#f92672">&amp;</span> x) {<span style="color:#66d9ef">return</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">this</span>;}
+  <span style="color:#75715e">// conversion to A (type-cast operator)
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">operator</span> <span style="color:#a6e22e">A</span>() {<span style="color:#66d9ef">return</span> A();}
+};
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span> ()
+{
+  A foo;
+  B bar <span style="color:#f92672">=</span> foo;    <span style="color:#75715e">// calls constructor
+</span><span style="color:#75715e"></span>  bar <span style="color:#f92672">=</span> foo;      <span style="color:#75715e">// calls assignment
+</span><span style="color:#75715e"></span>  foo <span style="color:#f92672">=</span> bar;      <span style="color:#75715e">// calls type-cast operator
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><p>The type-cast operator uses a particular syntax: it uses the <code>operator</code> keyword followed by the destination type and an empty set of parentheses. Notice that the return type is the destination type and thus is not specified before the operator keyword.</p>
+<hr>
+<h2 id="type-casting">Type casting</h2>
+<p>There exist two main syntaxes for generic type-casting: <em>functional</em> and <em>c-like</em>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">double</span> x <span style="color:#f92672">=</span> <span style="color:#ae81ff">10.3</span>;
+<span style="color:#66d9ef">int</span> y;
+y <span style="color:#f92672">=</span> <span style="color:#66d9ef">int</span> (x);    <span style="color:#75715e">// functional notation
+</span><span style="color:#75715e"></span>y <span style="color:#f92672">=</span> (<span style="color:#66d9ef">int</span>) x;    <span style="color:#75715e">// c-like cast notation
+</span></code></pre></div><p>But this is not allowed between unrelated classes.</p>
+<hr>
+<h2 id="dynamic-cast">dynamic_cast</h2>
+<p><code>dynamic_cast</code> can only be used with <em>pointers</em> and <em>reference</em> to classes (or with <code>void *</code>). It ensures that the result of the type conversion points to a valid complete object of the destination pointer type.</p>
+<p>It allows <em>pointer upcast</em> (pointer-to-derived to pointer-to-base) and <em>pointer downcast</em> (pointer-to-base to pointer-to-derived).
+Note: <em>downcast</em> iff the pointed object is a valid complete object of the target type</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">// dynamic_cast
+</span><span style="color:#75715e"></span><span style="color:#75715e">#</span><span style="color:#75715e">include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span><span style="color:#75715e">#</span><span style="color:#75715e">include</span> <span style="color:#75715e">&lt;exception&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Base</span> { <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">dummy</span>() {} };
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Derived</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> Base { <span style="color:#66d9ef">int</span> a; };
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span> () {
+  <span style="color:#66d9ef">try</span> {
+    Base <span style="color:#f92672">*</span> pba <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Derived;
+    Base <span style="color:#f92672">*</span> pbb <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Base;
+    Derived <span style="color:#f92672">*</span> pd;
+
+    pd <span style="color:#f92672">=</span> <span style="color:#66d9ef">dynamic_cast</span><span style="color:#f92672">&lt;</span>Derived<span style="color:#f92672">*</span><span style="color:#f92672">&gt;</span>(pba);
+    <span style="color:#66d9ef">if</span> (pd<span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>) cout <span style="color:#f92672">&lt;</span><span style="color:#f92672">&lt;</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Null pointer on first type-cast.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+
+    pd <span style="color:#f92672">=</span> <span style="color:#66d9ef">dynamic_cast</span><span style="color:#f92672">&lt;</span>Derived<span style="color:#f92672">*</span><span style="color:#f92672">&gt;</span>(pbb); <span style="color:#75715e">// Null pointer
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (pd<span style="color:#f92672">=</span><span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>) cout <span style="color:#f92672">&lt;</span><span style="color:#f92672">&lt;</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Null pointer on second type-cast.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+
+  } <span style="color:#66d9ef">catch</span> (exception<span style="color:#f92672">&amp;</span> e) {cout <span style="color:#f92672">&lt;</span><span style="color:#f92672">&lt;</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">Exception: </span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&lt;</span><span style="color:#f92672">&lt;</span> e.what();}
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><p>explanation:
+Notice that even though both are pointers of type <code>Base*</code>, <code>pba</code> actually points to an object of type <code>Derived</code>, while <code>pbb</code> points to an object of type <code>Base</code>. Therefore, when their respective type-casts are performed using <code>dynamic_cast</code>, <code>pba</code> is pointing to a full object of class <code>Derived</code>, whereas <code>pbb</code> is pointing to an object of class <code>Base</code>, which is an incomplete object of class Derived.</p>
+<h3 id="features">Features</h3>
+<p>If <code>dynamic_cast</code> is used to convert to a reference type and the conversion is not possible, an exception of type <code>bad_cast</code> is thrown.</p>
+<p><code>dynamic_cast</code> can also perform the other implicit casts allowed on pointers: casting null pointers between pointers types (even between unrelated classes), and casting any pointer of any type to a <code>void*</code> pointer.</p>
+<hr>
+<h2 id="static-cast">static_cast</h2>
+<p><code>static_cast</code> can perform conversions between pointers to related classes, not only <em>upcasts</em> (from pointer-to-derived to pointer-to-base), but also <em>downcasts</em> (from pointer-to-base to pointer-to-derived). No checks are performed during runtime to guarantee that the object being converted is in fact a full object of the destination type. Therefore, it is up to the programmer to ensure that the conversion is safe. On the other side, it does not incur the overhead of the type-safety checks of <code>dynamic_cast</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Base</span> {};
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Derived</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> Base {};
+Base <span style="color:#f92672">*</span> a <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Base;
+Derived <span style="color:#f92672">*</span> b <span style="color:#f92672">=</span> <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span>Derived<span style="color:#f92672">*</span><span style="color:#f92672">&gt;</span>(a);
+</code></pre></div><p>This would be valid code, although <code>b</code> would point to an incomplete object of the class and could lead to runtime errors if dereferenced.</p>
+<h3 id="features-1">Features</h3>
+<p><code>static_cast</code> is also able to perform all conversions allowed implicitly (not only those with pointers to classes), and is also able to perform the opposite of these. It can:</p>
+<ul>
+<li>Convert from void* to any pointer type. In this case, it guarantees that if the void* value was obtained by converting from that same pointer type, the resulting pointer value is the same.</li>
+<li>Convert integers, floating-point values and enum types to enum types.</li>
+</ul>
+<p>Additionally, static_cast can also perform the following:</p>
+<ul>
+<li>Explicitly call a single-argument constructor or a conversion operator.</li>
+<li>Convert to <em>rvalue references</em>.</li>
+<li>Convert enum class values into integers or floating-point values.</li>
+<li>Convert any type to void, evaluating and discarding the value.</li>
+</ul>
+<hr>
+<h2 id="const-cast">const_cast</h2>
+<p>This type of casting manipulates the constness of the object pointed by a pointer, either to be set or to be removed. For example, in order to pass a const pointer to a function that expects a non-const argument:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">// const_cast
+</span><span style="color:#75715e"></span><span style="color:#75715e">#</span><span style="color:#75715e">include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print</span> (<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span> str)
+{
+  cout <span style="color:#f92672">&lt;</span><span style="color:#f92672">&lt;</span> str <span style="color:#f92672">&lt;</span><span style="color:#f92672">&lt;</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">\n</span><span style="color:#e6db74">&#39;</span>;
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span> () {
+  <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span> c <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">sample text</span><span style="color:#e6db74">&#34;</span>;
+  print ( <span style="color:#66d9ef">const_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span><span style="color:#f92672">&gt;</span> (c) );
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><p>The example above is guaranteed to work because function print does not write to the pointed object. Note though, that removing the constness of a pointed object to actually write to it causes <em>undefined behaviour</em>.</p>
+<p>Reference:
+<a href="http://www.cplusplus.com/doc/tutorial/typecasting/">cppreference</a></p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>Guide of Hugo</title>
+            <link>https://dylan-h-wang.github.io/posts/2019/03/guide-of-hugo/</link>
+            <pubDate>Tue, 05 Mar 2019 21:21:03 +1100</pubDate>
+            
+            <guid>https://dylan-h-wang.github.io/posts/2019/03/guide-of-hugo/</guid>
+            <description>I will just choose directories you might use:
+archetypes this is the directory contains preconfigured front matter and possibly also a content disposition for your website&#39;s content types. There are several parameters you can set.
+config
+This file will define the behaviour of Hugo which is related to the style of your site. If you have multiple config files, you can create a configuration directory to store them. You can choose to override the dault file with one or multiple site config files using the command line --config switch.</description>
+            <content type="html"><![CDATA[<p>I will just choose directories you might use:</p>
+<p><code>archetypes</code>
+this is the directory contains preconfigured front matter and possibly also a content disposition for your website's content types. There are several <a href="https://gohugo.io/content-management/front-matter/">parameters</a> you can set.</p>
+<p><code>config</code><br>
+This file will define the behaviour of Hugo which is related to the style of your site. If you have multiple <code>config</code> files, you can create a configuration directory to store them. You can choose to override the dault file with one or multiple site config files using the command line <code>--config</code> switch.</p>
+<p>Examples:</p>
+<pre><code>hugo --config debugconfig.toml  
+hugo --config a.toml,b.toml,c.toml
+</code></pre><p>The full list of variables for <code>config</code> is <a href="https://gohugo.io/getting-started/configuration/#all-variables-yaml">here</a></p>
+<p>Here will show the variables which are often used:</p>
+<p><code>baseURL</code><br>
+Hostname (and path) to the root. e.g. <code>baseURL = www.example.org</code></p>
+<p><code>enableEmoji</code><br>
+Enable Emoji emoticons support for page content; see the <a href="https://www.webfx.com/tools/emoji-cheat-sheet/">Emoji Cheat Sheet</a>. e.g. <code>enableEmoji = true</code></p>
+<p><code>theme</code><br>
+Theme to use (located by default in <code>/themes/THEMENAME/</code>). e.g. <code>theme = example</code></p>
+<p><code>title</code><br>
+Site title</p>
+<p><code>content</code><br>
+All content for your website will live inside this directory. Each top-level folder in Hugo is considered a <a href="https://gohugo.io/content-management/sections/">content section</a> (this is very important when you try to create your site). For example, if your site has three main se
+ctions—<code>blog</code>, <code>articles</code>, and <code>tutorials</code>—you will have three directories at <code>content/blog</code>, <code>content/articles</code>, and <code>content/tutorials</code>. Hugo uses sections to assign default content types.</p>
+<p>Reference:
+config: <a href="https://gohugo.io/getting-started/configuration/#all-variables-yaml">https://gohugo.io/getting-started/configuration/#all-variables-yaml</a></p>
+]]></content>
+        </item>
+        
+    </channel>
+</rss>
